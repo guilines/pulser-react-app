@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash'
 import MessagesGrid from './components/MessagesGrid';
 import MessageForm from './components/MessageForm';
 
@@ -21,17 +22,21 @@ class App extends React.Component {
             name: 'Manny',
             currentTitle: '',
             currentDetails: '',
+            data: []
         }
+
     }
 
     componentDidMount() {
-        fetch('https://the-pulser.herokuapp.com/messages/', {
-            crossDomain:true,
-            method: 'GET',
-            headers: {'Content-Type':'application/json'},
-        })
-            .then(response => response.json())
-            .then(data => this.setState({ data }));
+        fetch('/messages/')
+            .then((res) => {
+                console.log(res);
+                return res.json();
+            })
+            .then((data) => {
+                console.log('setState:',data);
+                return this.setState({ data });
+            });
     }
 
     handleChange(event) {
@@ -77,6 +82,27 @@ class App extends React.Component {
         // feel free to keep the alert or not
         // alert('Successfully deleted!');
     }
+    thumbsUp(id) {
+        alert('Thumbs up! ' + id);
+
+        //fix
+        this.state.data.forEach((dt, ind) => {
+           if (_.isEqual(dt.id, id)) {
+               let state = this.state;
+               state = state.map((options) => {
+                   options.set("likeCounter", state.likeCounter+1);
+               });
+               this.setState({
+                   options: state
+               });
+
+               console.log(id);
+               // let counter = this.state.data[ind].likeCounter;
+               // this.setState({ counter: counter + 1 });
+           }
+        });
+        console.log(this.state.data);
+    }
 
   render() {
     return (
@@ -86,7 +112,9 @@ class App extends React.Component {
                        handleChange={this.handleChange.bind(this)}
                        handleSubmit={this.handleSubmit.bind(this)}/>
           <MessagesGrid notes={this.state.notes}
-                        deleteNote={this.deleteNote.bind(this)}/>
+                        data={this.state.data}
+                        deleteNote={this.deleteNote.bind(this)}
+                        thumbsUp={this.thumbsUp.bind(this)}/>
       </div>
     );
   }

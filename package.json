@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "lodash": "^4.17.10",
     "materialize": "^1.0.0",
     "materialize-css": "^0.100.2",
     "react": "^16.4.2",
@@ -11,6 +12,7 @@
     "react-materialize": "^2.4.5",
     "react-scripts": "1.1.5"
   },
+  "proxy": "https://the-pulser.herokuapp.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
